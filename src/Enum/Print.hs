@@ -4,6 +4,8 @@
 
 module Enum.Print
   (
+    showEnum,
+    readEnum
   ) where
 
 import           AlterPrelude
@@ -25,4 +27,4 @@ showEnum = flatten . show where
 
 -- | Parse the Enum
 readEnum   :: (Enum a, Show a, Read a) => String -> Either ParseError a
-readEnum s = (lookup EnumParseError s (map (showEnum &&& id) [toEnum 0 ..]))
+readEnum s = (lookup EnumParseError s (map (show &&& id) [toEnum 0..]))
