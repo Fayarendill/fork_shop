@@ -19,10 +19,10 @@ import           Text.Regex
 -- | Print an Enum for external use.
 showEnum :: (Show a) => a -> String
 showEnum = flatten . show where
-  flatten = map toLower . upperToDash
+  flatten     = map toLower . upperToDash
   upperToDash = flip (subRegex (mkRegex "([a-z])([A-Z])")) "\\1_\\2"
               . flip (subRegex (mkRegex "_")) "."
 
 -- | Parse the Enum
-readEnum :: (Enum a, Show a, Read a) => String -> Either ParseError a
-readEnum = \x -> (lookup (EnumParseError :: ParseError) x (map (showEnum &&& id) [toEnum 0 ..]))
+readEnum   :: (Enum a, Show a, Read a) => String -> Either ParseError a
+readEnum s = (lookup (EnumParseError :: ParseError) s (map (showEnum &&& id) [toEnum 0 ..]))
