@@ -11,6 +11,27 @@ packages:
       sha256: 90522851e0cd5bb9cb78e83adc4ee9fba86879c91ccdc514bedcc6ddfc140889
   original:
     hackage: haxl-2.1.2.0
+- completed:
+    hackage: regex-compat-0.95.2.0@sha256:2a48a304687f39ce5277d160e5f54c441c7d28ef0426bfc6c0275b9cacad119f,1206
+    pantry-tree:
+      size: 262
+      sha256: 4db5d5914a2e09cc950216d176312a00681c6f7c0bd43fb0e713fe83f1177bcc
+  original:
+    hackage: regex-compat-0.95.2.0
+- completed:
+    hackage: regex-base-0.94.0.0@sha256:d514eab2aa9ba4b9d14900ac40cbdea1993372466a6cc6ffeeab59a1975563c0,2166
+    pantry-tree:
+      size: 483
+      sha256: d147c3c3e3df525bd3909327ee287911f29c9fdf671350cae9e9c4164ceeaea6
+  original:
+    hackage: regex-base-0.94.0.0
+- completed:
+    hackage: regex-posix-0.96.0.0@sha256:744822e2c5b2930afdcf4d5d3c8b216639e084dfdd15a1bbd11455177a0f5c95,2438
+    pantry-tree:
+      size: 748
+      sha256: 51d7e0eebead790b642be69fcd2b175513f90c04db07c3c9c838b534b09ae74c
+  original:
+    hackage: regex-posix-0.96.0.0
 snapshots:
 - completed:
     size: 524786

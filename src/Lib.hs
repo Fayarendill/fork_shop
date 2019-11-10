@@ -8,5 +8,6 @@ module Lib
 
 import           DBDataSource
 import           Haxl.Prelude
+import           Prelude      ()
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
