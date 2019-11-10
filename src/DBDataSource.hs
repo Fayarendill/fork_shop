@@ -7,7 +7,7 @@
 {-# LANGUAGE StandaloneDeriving         #-}
 {-# LANGUAGE TypeFamilies               #-}
 
-module DataSource
+module DBDataSource
   ( -- PostId, PostContent
   -- , getPostIds
   -- , getPostContent
@@ -28,4 +28,8 @@ import           Data.Typeable
 import           Database.HDBC.MySQL
 import           Haxl.Core
 import qualified Types               as T
+
+
+
+
 

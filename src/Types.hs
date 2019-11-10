@@ -7,6 +7,9 @@ module Types
     ProductStatus, OrderStatus
   ) where
 
+--import           Enum.Print --TO DO reimlement
+--https://github.com/chrisdone/haskelldb-demo/blob/master/src/Data/Enum/Print.hs
+
 type CustomerId = Int
 type OrderId    = Int
 type ProductId  = Int
@@ -23,13 +26,15 @@ type ProductName = String
 type ProductArrivedDate     = String -- TO DO
 type OrderStatusChangedDate = String -- TO DO
 
-data ProductStatus =
-  OutOfStock
+data ProductStatus
+  = OutOfStock
   | InStock
   | RunningLow
+  deriving (Show,Enum,Read,Eq)
 
-data OrderStatus   =
-  WaitingForPayment
+data OrderStatus
+  = WaitingForPayment
   | PreparingForShipping
   | Shipping
   | Done
+  deriving (Show,Enum,Read,Eq)

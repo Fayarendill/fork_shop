@@ -6,8 +6,7 @@ module Lib
     ( someFunc
     ) where
 
-import           Database.MySQL.Base
-import           DataSource
+import           DBDataSource
 import           Haxl.Prelude
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
