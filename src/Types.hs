@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 module Types
   (
     CustomerId, OrderId, ProductId, MerchantId,
@@ -16,7 +17,7 @@ type ProductId  = Int
 type MerchantId = Int
 
 type Quantity    = Int
-type Price       = Int --usd * 100
+type Price       = Int -- usd * 100
 type CountryCode = Int
 type PhoneNumber = Int
 
@@ -38,3 +39,17 @@ data OrderStatus
   | Shipping
   | Done
   deriving (Show,Enum,Read,Eq)
+
+data OrderInfo = OrderInfo
+  { id              :: OrderId,
+    userId          :: CustomerId,
+    status          :: OrderStatus,
+    statusChangedAt :: OrderStatusChangedDate
+  }
+
+data CustomeInfo = CustomerInfo
+  { id          :: CustomerId,
+    email       :: Email,
+    countryCode :: CountryCode,
+    phone       :: PhoneNumber
+  }
