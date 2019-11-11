@@ -5,11 +5,9 @@ module Types
     Quantity, Price, CountryCode, PhoneNumber,
     Email, ProductName,
     ProductArrivedDate, OrderStatusChangedDate,
-    ProductStatus, OrderStatus
+    ProductStatus, OrderStatus,
+    OrderInfo, CustomerInfo
   ) where
-
---import           Enum.Print --TO DO reimlement
---https://github.com/chrisdone/haskelldb-demo/blob/master/src/Data/Enum/Print.hs
 
 type CustomerId = Int
 type OrderId    = Int
