@@ -9,6 +9,8 @@ module Types
     OrderInfo, CustomerInfo
   ) where
 
+import           Chronos.Types (Datetime)
+
 type CustomerId = Int
 type OrderId    = Int
 type ProductId  = Int
@@ -22,8 +24,8 @@ type PhoneNumber = Int
 type Email       = String
 type ProductName = String
 
-type ProductArrivedDate     = String -- TO DO
-type OrderStatusChangedDate = String -- TO DO
+type ProductArrivedDate     = Datetime
+type OrderStatusChangedDate = Datetime
 
 data ProductStatus
   = OutOfStock
@@ -39,15 +41,15 @@ data OrderStatus
   deriving (Show,Enum,Read,Eq)
 
 data OrderInfo = OrderInfo
-  { id              :: OrderId,
-    userId          :: CustomerId,
-    status          :: OrderStatus,
-    statusChangedAt :: OrderStatusChangedDate
+  { oId              :: OrderId,
+    oUserId          :: CustomerId,
+    oStatus          :: OrderStatus,
+    oStatusChangedAt :: OrderStatusChangedDate
   }
 
-data CustomeInfo = CustomerInfo
-  { id          :: CustomerId,
-    email       :: Email,
-    countryCode :: CountryCode,
-    phone       :: PhoneNumber
+data CustomerInfo = CustomerInfo
+  { cId          :: CustomerId,
+    cEmail       :: Email,
+    cCountryCode :: CountryCode,
+    cPhone       :: PhoneNumber
   }

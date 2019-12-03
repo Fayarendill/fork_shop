@@ -26,6 +26,27 @@ dependencies:
 - containers >= 0.6
 - HDBC-mysql >= 0.7.1.0
 - regex-compat >= 0.95.2.0
+- chronos >= 1.0.9
+- transformers >= 0.4
+- haskelldb >= 2.2.4
+- scotty >= 0.6
+- wai
+- warp
+- http-types
+- resourcet
+- text
+- bytestring
+- blaze-html
+- persistent >=2
+- persistent-template >=2
+- monad-logger >= 0.3
+- heroku
+- wai-middleware-static
+- wai-extra
+- time
+- mysql-simple >= 0.4.5
+- persistent-mysql >= 2.9.0
+
 library:
   source-dirs: src
 
