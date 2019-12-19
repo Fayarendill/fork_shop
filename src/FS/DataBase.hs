@@ -32,16 +32,16 @@ import qualified Text.Blaze.Html5              as H
 import           Text.Blaze.Html5.Attributes
 import qualified Text.Blaze.Html5.Attributes   as A
 import qualified Types                         as T
-import           Web.Scotty
-import qualified Web.Scotty                    as S
+--import           Web.Scotty
+--import qualified Web.Scotty                    as S
 
-runDb :: MySQL.ConnectInfo -> SqlPersist (ResourceT IO) a -> IO a
+runDb :: MySQL.ConnectInfo -> SqlPersistM (ResourceT IO) a -> IO a
 runDb connInfo query = runResourceT . withMySQLConn connInfo . runSqlConn $ query
 
-readPosts ::  MySQL.ConnectInfo -> IO [Entity Post]
+readPosts ::  MySQL.ConnectInfo -> IO [Entity T.OrderInfo]
 readPosts connInfo = (runDb connInfo $ selectList [] [LimitTo 10])
 
-blaze = S.html . renderHtml
+--blaze = S.html . renderHtml
 
 -- main = do
 --   runDb myConnInfo $ runMigration migrateAll
