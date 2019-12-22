@@ -1,5 +1,9 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards   #-}
+{-# LANGUAGE DeriveAnyClass             #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE OverloadedStrings          #-}
+{-# LANGUAGE Rank2Types                 #-}
+{-# LANGUAGE RecordWildCards            #-}
+{-# LANGUAGE TemplateHaskell            #-}
 
 module Types
   (
@@ -8,12 +12,27 @@ module Types
     Email, ProductName,
     ProductArrivedDate, OrderStatusChangedDate,
     ProductStatus, OrderStatus,
-    OrderInfo, CustomerInfo
+    OrderInfo, CustomerInfo,
+    CustomerUUID
   ) where
 
+import           Control.Error
+import           Control.Lens
+import           Data.ByteString      (ByteString)
+import           Data.Text            (Text)
+import qualified Data.Text            as T
 import           Data.Time.Calendar
+import           Data.UUID
+import           System.Random
 -- import           Chronos.Types        (Datetime, Day)
 import           Database.Persist.Sql
+
+data CustomerUUID = CustomerUUID
+  {
+    _customerUuid :: UUID
+  } deriving (Show, Eq, Ord, Random)
+
+makeLenses ''CustomerUUID
 
 type CustomerId = Int
 type OrderId    = Int
@@ -85,6 +104,28 @@ instance PersistFieldSql OrderStatus where
 
 instance PersistFieldSql ProductStatus where
   sqlType _ = SqlOther "product_status"
+
+
+instance PersistFieldSql CustomerUUID where
+  sqlType = const $ SqlOther "uuid"
+
+instance PersistField CustomerUUID where
+  toPersistValue = toPersistValueUUID customerUuid
+  fromPersistValue = fromPersistValueUUID customerUuid
+
+_ASCIIBytes :: Prism' ByteString UUID
+_ASCIIBytes = prism toASCIIBytes $ \bs -> note bs $ fromASCIIBytes bs
+
+toPersistValueUUID :: Iso' a UUID -> a -> PersistValue
+toPersistValueUUID i a = PersistDbSpecific $ a ^. i . re _ASCIIBytes
+
+fromPersistValueUUID :: Iso' a UUID -> PersistValue -> Either Text a
+fromPersistValueUUID i (PersistDbSpecific bs) =
+  note "Could not parse UUID" $ bs ^? _ASCIIBytes . from i
+fromPersistValueUUID _ x = Left $ "Invalid value for UUID: " <> showT x
+
+showT :: Show a => a -> Text
+showT = T.pack . show
 
 -- instance 'PersistField' OrderStatus where
 --   'toPersistValue' s = case s of

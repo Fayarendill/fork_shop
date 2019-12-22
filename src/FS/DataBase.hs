@@ -45,7 +45,8 @@ import qualified Types                         as T
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 Customer
-    cId T.CustomerId
+    cuuid T.CustomerUUID default=uuid_generate_v4()
+    UniqueCustomerUUID cuuid
     first_name String
     last_name String
     deriving Show
@@ -77,7 +78,7 @@ runDb :: MySQL.ConnectInfo -> SqlPersistT (ResourceT IO) a -> IO a
 runDb connInfo query = runResourceT . withMySQLConn connInfo . runSqlConn $ query
 
 getOrderInfoByID :: MySQL.ConnectInfo -> T.OrderId -> IO [Entity T.OrderInfo]
-getOrderInfoByID connInfo = (runDb connInfo $ select)
+getOrderInfoByID oid connInfo = (runDb connInfo $ select)
 
 --blaze = S.html . renderHtml
 
