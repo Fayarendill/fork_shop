@@ -14,8 +14,8 @@ import           Data.Char     (toLower)
 import           Data.Either
 import           Data.Error
 import           Data.Typeable
-import           Haxl.Prelude  hiding (lookup)
-import           Prelude       ()
+-- import           Haxl.Prelude  hiding (lookup)
+import           Prelude       hiding (lookup)
 import           Text.Regex
 
 -- | Print an Enum for external use.
