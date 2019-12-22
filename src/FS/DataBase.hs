@@ -1,13 +1,16 @@
-{-# LANGUAGE EmptyDataDecls       #-}
-{-# LANGUAGE FlexibleContexts     #-}
-{-# LANGUAGE FlexibleInstances    #-}
-{-# LANGUAGE GADTs                #-}
-{-# LANGUAGE OverloadedStrings    #-}
-{-# LANGUAGE QuasiQuotes          #-}
-{-# LANGUAGE TemplateHaskell      #-}
-{-# LANGUAGE TypeFamilies         #-}
-{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE EmptyDataDecls             #-}
+{-# LANGUAGE FlexibleContexts           #-}
+{-# LANGUAGE FlexibleInstances          #-}
+{-# LANGUAGE GADTs                      #-}
+{-# LANGUAGE OverloadedStrings          #-}
+{-# LANGUAGE QuasiQuotes                #-}
+{-# LANGUAGE TemplateHaskell            #-}
+{-# LANGUAGE TypeFamilies               #-}
+{-# LANGUAGE TypeSynonymInstances       #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE MultiParamTypeClasses      #-}
+{-# LANGUAGE UndecidableInstances       #-}
 
 module FS.DataBase
   (
@@ -32,14 +35,49 @@ import qualified Text.Blaze.Html5              as H
 import           Text.Blaze.Html5.Attributes
 import qualified Text.Blaze.Html5.Attributes   as A
 import qualified Types                         as T
---import           Web.Scotty
---import qualified Web.Scotty                    as S
 
-runDb :: MySQL.ConnectInfo -> SqlPersistM (ResourceT IO) a -> IO a
+-- share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
+-- User
+--     name String
+--     age Int
+--     deriving Show
+-- |]
+
+share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
+Customer
+    cId T.CustomerId
+    first_name String
+    last_name String
+    deriving Show
+CustomerInfo
+    ciId T.CustomerId
+    email T.Email
+    country_code T.CountryCode
+    phone T.PhoneNumber
+    deriving Show
+OrderItems
+    order_id T.OrderId
+    product_id T.ProductId
+    quantity T.Quantity
+Order
+    oId T.OrderId
+    user_id T.CustomerId
+    oStatus T.OrderStatus
+    status_changed_at T.OrderStatusChangedDate
+Product
+    pId T.ProductId
+    name T.ProductName
+    merchant_id T.MerchantId
+    price T.Price
+    amount T.Quantity
+    pStatus T.ProductStatus
+|]
+
+runDb :: MySQL.ConnectInfo -> SqlPersistT (ResourceT IO) a -> IO a
 runDb connInfo query = runResourceT . withMySQLConn connInfo . runSqlConn $ query
 
-readPosts ::  MySQL.ConnectInfo -> IO [Entity T.OrderInfo]
-readPosts connInfo = (runDb connInfo $ selectList [] [LimitTo 10])
+getOrderInfoByID :: MySQL.ConnectInfo -> T.OrderId -> IO [Entity T.OrderInfo]
+getOrderInfoByID connInfo = (runDb connInfo $ select)
 
 --blaze = S.html . renderHtml
 
