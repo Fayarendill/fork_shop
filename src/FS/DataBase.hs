@@ -36,43 +36,62 @@ import           Text.Blaze.Html5.Attributes
 import qualified Text.Blaze.Html5.Attributes   as A
 import qualified Types                         as T
 
--- share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
--- User
---     name String
---     age Int
---     deriving Show
--- |]
-
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
-Customer
-    cuuid T.CustomerUUID default=uuid_generate_v4()
-    UniqueCustomerUUID cuuid
+User
+    user_id T.CustomerUUID default=uuid_generate_v4()
+    UniqueCustomerUUID user_id
     first_name String
     last_name String
-    deriving Show
-CustomerInfo
-    ciId T.CustomerId
     email T.Email
     country_code T.CountryCode
     phone T.PhoneNumber
     deriving Show
-OrderItems
+Order
     order_id T.OrderId
+    customer_id T.CustomerId
     product_id T.ProductId
     quantity T.Quantity
-Order
-    oId T.OrderId
-    user_id T.CustomerId
-    oStatus T.OrderStatus
+    order_status T.OrderStatus
     status_changed_at T.OrderStatusChangedDate
-Product
-    pId T.ProductId
+Fork
+    fork_id T.ProductId
     name T.ProductName
     merchant_id T.MerchantId
     price T.Price
     amount T.Quantity
-    pStatus T.ProductStatus
+    product_status T.ProductStatus
 |]
+
+-- share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
+-- Customer
+--     customer_id T.CustomerUUID default=uuid_generate_v4()
+--     UniqueCustomerUUID customer_id
+--     first_name String
+--     last_name String
+--     deriving Show
+-- CustomerInfo
+--     info_id T.CustomerId
+--     email T.Email
+--     country_code T.CountryCode
+--     phone T.PhoneNumber
+--     deriving Show
+-- OrderItems
+--     order_id T.OrderId
+--     product_id T.ProductId
+--     quantity T.Quantity
+-- Order
+--     oId T.OrderId
+--     user_id T.CustomerId
+--     oStatus T.OrderStatus
+--     status_changed_at T.OrderStatusChangedDate
+-- Product
+--     pId T.ProductId
+--     name T.ProductName
+--     merchant_id T.MerchantId
+--     price T.Price
+--     amount T.Quantity
+--     pStatus T.ProductStatus
+-- |]
 
 runDb :: MySQL.ConnectInfo -> SqlPersistT (ResourceT IO) a -> IO a
 runDb connInfo query = runResourceT . withMySQLConn connInfo . runSqlConn $ query
