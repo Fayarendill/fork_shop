@@ -4,13 +4,12 @@
 
 module AlterPrelude
   (
-    module Haxl.Prelude,
+    module Prelude,
     lookup
   ) where
 import           Data.Either
 import           Data.Error
-import           Haxl.Prelude hiding (lookup)
-import           Prelude      ()
+import           Prelude     hiding (lookup)
 
 lookup                  :: (Eq a, Error e) => e -> a -> [(a,b)] -> Either e b
 lookup err _ []         = Left err
