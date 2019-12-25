@@ -14,7 +14,9 @@ module Types
     ProductStatus(OutOfStock, InStock, RunningLow),
     OrderStatus(WaitingForPayment, PreparingForShipping, Shipping, Done),
     OrderInfo, CustomerInfo,
-    CustomerUUID, getDay
+    CustomerUUID(CustomerUUID), CustomerUUIDStr,
+    nilCustomerUUID, nilCustomerUUIDStr,
+    getDay,
   ) where
 
 import           Control.Error
@@ -31,10 +33,18 @@ import           System.Random
 -- import           Chronos.Types        (Datetime, Day)
 import           Database.Persist.Sql
 
+type CustomerUUIDStr = String
+
 data CustomerUUID = CustomerUUID
   {
     _customerUuid :: UUID
   } deriving (Show, Eq, Ord, Random)
+
+nilCustomerUUID :: CustomerUUID
+nilCustomerUUID = CustomerUUID nil
+
+nilCustomerUUIDStr :: CustomerUUIDStr
+nilCustomerUUIDStr = toString nil
 
 makeLenses ''CustomerUUID
 
