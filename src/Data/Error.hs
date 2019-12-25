@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Data.Error
   (
     Error(..),
@@ -5,16 +7,15 @@ module Data.Error
   ) where
 
 class Error a where
-  lid :: a -> a
+  message :: a -> String
 
 data ParseError
   = EnumParseError
   deriving (Show,Enum,Read,Eq)
 
 instance Error ParseError where
-  lid e = e
+ message EnumParseError = "Enum parse error"
 
 -- instance Show ParseError where
 --   show EnumParseError = "EnumParseError"
-
 
