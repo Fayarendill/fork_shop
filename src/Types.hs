@@ -11,18 +11,22 @@ module Types
     Quantity, Price, CountryCode, PhoneNumber,
     Email, ProductName,
     ProductArrivedDate, OrderStatusChangedDate,
-    ProductStatus, OrderStatus,
+    ProductStatus(OutOfStock, InStock, RunningLow),
+    OrderStatus(WaitingForPayment, PreparingForShipping, Shipping, Done),
     OrderInfo, CustomerInfo,
-    CustomerUUID
+    CustomerUUID, getDay
   ) where
 
 import           Control.Error
 import           Control.Lens
 import           Data.ByteString      (ByteString)
+import           Data.Error
 import           Data.Text            (Text)
 import qualified Data.Text            as T
 import           Data.Time.Calendar
+import           Data.Time.Clock
 import           Data.UUID
+import           Enum.Print
 import           System.Random
 -- import           Chronos.Types        (Datetime, Day)
 import           Database.Persist.Sql
@@ -78,26 +82,28 @@ data CustomerInfo = CustomerInfo
   }
 
 instance PersistField ProductStatus where
-  toPersistValue OutOfStock = PersistInt64 0
-  toPersistValue InStock    = PersistInt64 1
-  toPersistValue RunningLow = PersistInt64 2
+  toPersistValue OutOfStock = PersistInt64 1
+  toPersistValue InStock    = PersistInt64 2
+  toPersistValue RunningLow = PersistInt64 3
 
-  fromPersistValue (PersistInt64 0) = Right OutOfStock
-  fromPersistValue (PersistInt64 1) = Right InStock
-  fromPersistValue (PersistInt64 2) = Right RunningLow
-  fromPersistValue _                = Left "Enum parse error"
+  fromPersistValue s = result. readEnum.clean $ s
+    where
+      clean            = T.unpack. T.filter (\x -> x/='\\' && x/='\"') . T.replace "PersistText " "" . T.pack . show
+      result (Left a)  = Left . T.pack . (++) (message a ) $ (show $ s)
+      result (Right b) = Right b
+
 
 instance PersistField OrderStatus where
-  toPersistValue WaitingForPayment    = PersistInt64 0
-  toPersistValue PreparingForShipping = PersistInt64 1
-  toPersistValue Shipping             = PersistInt64 2
-  toPersistValue Done                 = PersistInt64 3
+  toPersistValue WaitingForPayment    = PersistInt64 1
+  toPersistValue PreparingForShipping = PersistInt64 2
+  toPersistValue Shipping             = PersistInt64 3
+  toPersistValue Done                 = PersistInt64 4
 
-  fromPersistValue (PersistInt64 0) = Right WaitingForPayment
-  fromPersistValue (PersistInt64 1) = Right PreparingForShipping
-  fromPersistValue (PersistInt64 2) = Right Shipping
-  fromPersistValue (PersistInt64 3) = Right Done
-  fromPersistValue _                = Left "Enum parse error"
+  fromPersistValue s = result. readEnum.clean $ s
+    where
+      clean            = T.unpack. T.filter (\x -> x/='\\' && x/='\"') . T.replace "PersistText " "" . T.pack . show
+      result (Left a)  = Left . T.pack . (++) (message a ) $ (show $ s)
+      result (Right b) = Right b
 
 instance PersistFieldSql OrderStatus where
   sqlType _ = SqlOther "order_status"
@@ -126,6 +132,9 @@ fromPersistValueUUID _ x = Left $ "Invalid value for UUID: " <> showT x
 
 showT :: Show a => a -> Text
 showT = T.pack . show
+
+getDay :: UTCTime -> Day
+getDay (UTCTime d _) = d
 
 -- instance 'PersistField' OrderStatus where
 --   'toPersistValue' s = case s of
