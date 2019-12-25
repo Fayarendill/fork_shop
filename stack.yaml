@@ -40,24 +40,19 @@ packages:
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
 extra-deps:
-- haxl-2.1.2.0
 - regex-compat-0.95.2.0
 - regex-base-0.94.0.0
 - regex-posix-0.96.0.0
-- chronos-1.0.9
 #- persistent-mysql-haskell-2.9.0
 - git: https://github.com/yesodweb/persistent.git
   commit: d79385d991e3c0c75b34f1fae8502c739bb0c728
   subdirs:
     - persistent-mysql
-- git: https://github.com/m4dc4p/haskelldb.git
-  commit: a1fbc8a2eca8c70ebe382bf4c022275836d9d510
 - heroku-0.1.2.3@sha256:8a5f7b9a0a60178a6edb1e5e8cbcdb8d5ffb407939bc30deb8ae7d05e879e9a7,928
 - monad-logger-0.3.31
-#-0.3.0@sha256:d9163b98221abf3c56cfdce83ef7a915c0f6c9550edb187c2378deee212f4930,1058
-#- persistent-1.3.3@sha256:85f99f01db4b60a6c3951372bb915d95ff051d03aaacaaf5264962f93944ca94,3972
 - persistent-template-2.7.3
 - persistent-2.10.4
+- guid-0.1.0
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
