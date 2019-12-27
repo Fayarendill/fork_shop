@@ -48,6 +48,8 @@ dependencies:
 - errors >= 2.3.0
 - random >= 1.1
 - guid >= 0.1
+- yesod >= 1.6
+- shakespeare >= 2.0.22
 
 library:
   source-dirs: src

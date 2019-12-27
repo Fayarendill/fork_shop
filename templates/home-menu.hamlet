@@ -1,0 +1,27 @@
+<body .news>
+  <header>
+    <div .nav>
+      <ul>
+        <li class="market">
+          <a class="active" href=@{MarketR}>Market
+        <li class="orders">
+          <a href=@{OrdersR}>Orders
+        <li class="about">
+          <a href="#">About
+        <li class="news">
+          <a href="#">Newsletter
+        <li class="contact">
+          <a href="#">Contact
+    <div id="app" .wrapper>
+      <h2>Definition List
+        <div .term-grid .grid-header>
+          <label>Name
+          <label>Price
+          <label>Amount
+        <div .term-grid v-for="term in terms">
+          <label>{{ term.word }}
+        <div .definition>{{ term.definition }}
+        <div .alternate>{{ term.alternate }}
+
+
+
